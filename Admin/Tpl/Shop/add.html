@@ -1,0 +1,68 @@
+<div class="pageContent">
+    <form method="post"    enctype="multipart/form-data"     action="__URL__/insert/navTabId/__MODULE__?callbackType=closeCurrent" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+        <div class="pageFormContent" layoutH="58">
+            <div class="unit">
+                <label>商铺名称：</label>
+                <input type="text" class=""  name="name">
+            </div>
+            <div class="unit">
+                <label>商铺地址：</label>
+                <input type="text" class=""  name="address">
+            </div>
+            <div class="unit">
+                <label>商铺电话：</label>
+                <input type="text" class=""   name="phone">
+            </div>
+            <div class="unit">
+                <label>密码：</label>
+                <input type="text"    name="password">
+            </div>
+            <div class="unit">
+                <label>所属工程：</label>
+                <SELECT name="project_id" class="">
+                    <option selected="selected" value="">请选择工程</option>
+                    <volist name="projectList" id="vo">
+                        <option value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                </SELECT>
+            </div>
+            <div class="unit">
+                <label>查看人员分类：</label>
+                <SELECT name="sort_id" class="">
+                    <option selected="selected" value="">请选择人员分类</option>
+                    <volist name="sortList" id="vo">
+                        <option value="{$vo.id}">{$vo.title}</option>
+                    </volist>
+                </SELECT>
+            </div>
+            <div class="unit">
+                <label>所属品牌：</label>
+                <SELECT name="brand_id" class="">   
+                    <option selected="selected" value="">请选择品牌</option>
+                    <volist name="brandList" id="vo">
+                        <option value="{$vo.id}">{$vo.title}</option>
+                    </volist>
+                </SELECT>
+            </div>
+<!--            <div class="unit">
+                <label>门店照片/视频：</label>
+                <input type="file" name="img[]" multiple="multiple"  />
+            </div>-->
+        </div>
+
+        <div class="formBar">
+            <ul>
+                <li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+                <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+            </ul>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    var inum = 1;//阶段数字自增变化
+    function aaa() {
+        var str = '<div class="unit"><label>门店照片/视频：</label><input type="file" name="img[]"  /> </div>';
+        $("#div_Old").append(str);
+        inum++;
+    }
+</script>

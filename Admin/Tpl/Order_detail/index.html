@@ -1,0 +1,90 @@
+<form id="pagerForm" action="__URL__" method="post">
+    <input type="hidden" name="pageNum" value="1"/>
+    <input type="hidden" name="account" value="{$_REQUEST.account}"/>
+</form>
+
+<div class="page">
+    <div class="pageHeader">
+        <form onsubmit="return navTabSearch(this);" action="__URL__" method="post">
+            <input type="hidden" name="pageNum" value="1"/>
+            <div class="searchBar">
+                <ul class="searchContent">
+                    <li>
+                        <label>标题：</label>
+                        <input type="text" name="name" value=""/>
+                    </li>
+                    <div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div>
+                </ul>
+            </div>
+        </form>
+    </div>
+
+    <div class="pageContent">
+        <div class="panelBar">
+
+        </div>
+
+        <table class="table" width="100%" layoutH="114">
+            <thead>
+                <tr>
+                    <th width="60">编号</th>
+                    <th width="100">报修类型</th>
+                    <th width="100">报修描述</th>
+                </tr>
+            </thead>
+            <tbody class="excelContent">
+            <volist id="vo" name="list">
+                <tr target="sid_group" rel="{$vo['id']}">
+
+                    <td>{$i}</td>
+                    <td>{$vo['type']|getFieldById='guarantee','title'}</td>
+                    <td>{$vo['comment']}</td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+
+        <div class="panelBar">
+            <div class="pages">
+                <span>共{$totalCount}条</span>
+            </div>
+            <div class="pagination" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getPosAndRec(m) {
+        var _Pos = new Array();
+        $("." + m + " input:checkbox").each(function () {
+            if ($(this).attr("checked")) {
+                _Pos.push($(this).val());
+            }
+        });
+        return _Pos;
+    }
+    $(function () {
+        $(".delete").click(function () {
+            var myurl = "__URL__";
+            uids = getPosAndRec("excelContent");
+            if (uids.length == 0) {
+                alert("请选择要删除的数据");
+                return false;
+            }
+            $.ajax({
+                url: myurl + "/delete/",
+                data: {'uids': uids},
+                type: 'get',
+                datatype: 'json',
+                success: function (msg) {
+                    if (msg === '1') {
+                        navTab.reloadFlag('Project');
+                    } else if (msg === '2') {
+                        alert("删除失败");
+                        navTab.reloadFlag('Project');
+                    }
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,59 @@
+
+<div class="pageHeader">
+</div>
+<div class="pageContent">
+    <!--<FORM id="formsubmit" action="__URL__/insert/navTabId/__MODULE__" onsubmit="return validateCallback(this, navTabAjaxDone);">-->
+    <form method="post" action="__URL__/insert/navTabId/__MODULE__?callbackType=closeCurrent" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        <input type="hidden" name="companyId" value="{$companyId}" />
+        <input type="hidden" id="txtHobby" name="txtHobby" />
+        <table class="table" width="100%" layoutH="70">
+            <thead>
+                <tr>
+                    <th width="30"></th>
+                    <th width="20">编号</th>
+                    <th width="50">店铺名称</th>
+                </tr>
+            </thead>
+            <tbody class="excelContent_ins">
+            <volist id="vo" name="shopRow" >
+                <tr target="sid_class" rel="{$vo['id']}">
+                    <td><input class="checkbox" name="id" value="{$vo.id}" type="checkbox"   onclick="c();"></td>
+                    <td width="60">{$i}</td>
+                    <td width="60">{$vo.name}</td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <!--<button class="qujian" type="submit">添加</button>-->
+                            <button  type="submit">添加</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">取消</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </FORM>
+</div>
+<script>
+
+    function c() {
+        var result = "";
+        $(this + ":checked").each(function () {
+            result += $(this).val() + ',';
+        });
+        alert(result);
+        $("#txtHobby").val(result);
+    }
+
+</script>

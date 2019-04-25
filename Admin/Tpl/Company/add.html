@@ -1,0 +1,42 @@
+<div class="pageContent">
+    <form method="post" action="__URL__/insert/navTabId/__MODULE__?callbackType=closeCurrent" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+        <div class="pageFormContent" layoutH="58">
+            <div class="unit">
+                <label>名称：</label>
+                <input type="text" class="required"  name="name">
+            </div>
+            <div class="unit">
+                <label>密码：</label>
+                <input type="text" class="required"   name="password">
+            </div>
+            <div class="unit">
+                <label>联系电话：</label>
+                <input type="text" class="required"   name="phone">
+            </div>
+            <div class="unit">
+                <label>选择所属人员分类：</label>
+                <SELECT name="sort_id" class="required">
+                    <option selected="selected" value="">请选择人员分类</option>
+                    <volist name="sortList" id="vo">
+                        <option value="{$vo.id}">{$vo.title}</option>
+                    </volist>
+                </SELECT>
+            </div>
+            <div class="unit">
+                <label>选择可查看品牌：</label>
+                <SELECT name="Viewbrand" class="required">
+                    <option selected="selected" value="0">两个都可查看</option>
+                    <volist name="brandList" id="vos">
+                        <option value="{$vos.id}">{$vos.title}</option>
+                    </volist>
+                </SELECT>
+            </div>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+                <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+            </ul>
+        </div>
+    </form>
+</div>

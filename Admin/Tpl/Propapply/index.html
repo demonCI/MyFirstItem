@@ -1,0 +1,88 @@
+<form id="pagerForm" action="__URL__" method="post">
+    <input type="hidden" name="pageNum" value="1"/>
+    <input type="hidden" name="account" value="{$_REQUEST.account}"/>
+</form>
+
+<div class="page">
+    <div class="pageHeader">
+        <form onsubmit="return navTabSearch(this);" action="__URL__" method="post">
+            <input type="hidden" name="pageNum" value="1"/>
+            <div class="searchBar">
+                <ul class="searchContent">
+                    <li>
+                        <label>标题：</label>
+                        <input type="text" name="name" value=""/>
+                    </li>
+                    <div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div>
+                </ul>
+            </div>
+        </form>
+    </div>
+
+    <div class="pageContent">
+        <div class="panelBar">
+            <ul class="toolBar">
+                <li><a class="icon excelBtn"><span>导出excel</span></a><a href="" target="dwzExport" targettype="navTab" title="确实要导出这些记录吗?"></a></li>
+                <li><a class="icon pdfBtn"><span>导出pdf</span></a><a href="" target="dwzExport" targettype="navTab" title="确实要导出这些记录吗?"></a></li>
+            </ul>
+        </div>
+
+        <table class="table" width="100%" layoutH="114">
+            <thead>
+                <tr>
+                    <th width="60">编号</th>
+                    <th width="100">店铺名称</th>
+                    <th width="100">工程名称</th>
+                    <th width="80">申请类型</th>
+                    <th width="100">申请描述</th>
+                    <th width="100">申请时间</th>
+                    <th width="100">施工人员名称</th>
+                    <th width="100">施工人员电话</th>
+                    <th width="100">订单状态</th>
+                </tr>
+            </thead>
+            <tbody>
+            <volist id="vo" name="list">
+                <tr target="sid_group" rel="{$vo['id']}">
+                    <td>{$vo['id']}</td>
+                    <td>{$vo['shop_id']}</td>
+                    <td>{$vo['project_id']}</td>
+                    <td>{$vo['order_type']}</td>
+                    <td>{$vo['ptime']}</td>
+                    <td>{$vo['reason']}</td>
+                    <td>{$vo['project_name']}</td>
+                    <td>{$vo['project_phone']}</td>
+                    <td>{$vo['is_del']}</td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+
+        <div class="panelBar">
+            <div class="pages">
+                <span>共{$totalCount}条</span>
+            </div>
+            <div class="pagination" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $(".pdfBtn").click(function () {
+            var m = $(this).next();
+            var n;
+            n = "__URL__/pdf/navTabId/__MODULE__?callbackType=closeCurrent";
+            m.attr("href", n);
+            m.click();
+            return false;
+        });
+        $(".excelBtn").click(function () {
+            var m = $(this).next();
+            var n;
+            n = "__URL__/excel/navTabId/__MODULE__?callbackType=closeCurrent";
+            m.attr("href", n);
+            m.click();
+            return false;
+        });
+    });
+</script>

@@ -1,0 +1,20 @@
+<div class="pageContent">
+
+    <form  method="post"    enctype="multipart/form-data"      action="__URL__/insert/navTabId/__MODULE__?callbackType=closeCurrent" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+        <div class="unit">
+            <label>门店快照：</label>
+          <input type="file" name="img[]" multiple="multiple"  />
+        </div>
+        <div class="unit">
+            <label>门店快照：</label>
+            <input type="text" name="name" value="" />
+        </div>
+
+        <div class="formBar">
+            <ul>
+                <li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+                <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+            </ul>
+        </div>
+    </form>
+</div>

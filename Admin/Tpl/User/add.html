@@ -1,0 +1,55 @@
+<script language="javascript">
+//检测文件类型
+    function checkExd(fileid) {
+        fileName = document.getElementById(fileid).value;
+        if (fileName.lastIndexOf(".") + 1 >= fileName.length) {
+            alert("文件类型不匹配");
+            return false;
+        }
+        var exd = fileName.substring(fileName.lastIndexOf(".") + 1).toUpperCase();
+        if (exd == "MP4" || exd == "JPG" || exd == "PNG" || exd == "BMP" || exd == "JPEG")
+            return true;
+        else {
+            alert("文件类型不匹配");
+            document.getElementById(fileid).value = "";
+            return false;
+        }
+    }
+</script>
+<div class="pageContent">
+    <form method="post"  enctype="multipart/form-data" action="__URL__/insert/navTabId/__MODULE__?callbackType=closeCurrent" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+        <div class="pageFormContent" layoutH="58">
+            <div class="unit">
+                <label>用户名：</label>
+                <input type="text" class=" " size="30" maxlength="20" name="account" />
+            </div>
+            <div class="unit">
+                <label>密码：</label>
+                <input type="text" class=" "  size="30" maxlength="20" name="password"/>
+            </div>
+            <div class="unit">
+                <label>手机号：</label>
+                <input type="text" class="" size="30" maxlength="20" name="phone" />
+            </div>
+            <div class="unit">
+                <label>备注：</label>
+                <textarea name="remark" rows="3" cols="57"></textarea>
+            </div>
+            <div class="unit">
+                <label>门店快照：</label>
+                <input id="File1" type="file" name="pic" onchange="checkExd('File1')" value=""/>png/jpg/tif格式，照片最大为3M
+            </div>
+
+        </div>
+        <div class="formBar">
+            <ul>
+                <li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+                <li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+            </ul>
+        </div>
+    </form>
+
+</div>
+
+
+

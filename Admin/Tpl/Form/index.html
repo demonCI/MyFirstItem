@@ -1,0 +1,145 @@
+<form id="pagerForm" action="__URL__" method="post">
+  <input type="hidden" name="pageNum" value="1"/>
+  <input type="hidden" name="_order" value="{$Think.request._order}"/>
+  <input type="hidden" name="_sort" value="{$Think.request._sort}"/>
+  <input type="hidden" name="_sort" value="{$Think.request.ExpID}"/>
+</form>
+
+
+<div class="pageHeader">
+  <form onsubmit="return navTabSearch(this);" action="__URL__" method="post" >
+  <input type="hidden" name="Vid" value="{$_REQUEST.Vid}"/>
+  <input type="hidden" name="pdate" value="{$Think.request.pdate}"/>
+    <div class="searchBar">
+      <ul class="searchContent">
+        <li>
+                    <label>快递公司：</label>
+                    <SELECT name="ExpID">
+                        <option value="" selected="selected">选择快递公司</option>
+                        <volist name="Exp" id="lt">
+                            <option <eq name="Think.request.ExpID" value="$lt.id">selected</eq> value={$lt.id} >{$lt.title}</option>
+                        </volist>
+                    </SELECT>
+                </li>
+      </ul>
+      <div class="subBar">
+        <ul>
+              <!-- <if condition="($_SESSION['authId'] neq 1)">
+                  <li><div class="buttonActive"><div class="buttonContent"><button id="select" type="submit">查询</button></div></div></li>
+              </if> -->
+        
+                  <li><div class="buttonActive"><div class="buttonContent"><button  type="submit">查询</button></div></div></li>
+             
+
+<!-- <input type="submit"  value="导入" /> -->
+
+        </ul>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="pageContent">
+  <div class="panelBar">
+    <ul class="toolBar">
+    <if condition="($_SESSION['authId'] neq 1)">
+      <li><a class="add" href="__URL__/add/" target="navTab" mask="true"><span>新增</span></a></li>
+      <li><a class="delete" href="__URL__/foreverdelete/id/{sid_class}/navTabId/__MODULE__" target="ajaxTodo" title="你确定要删除吗？" warn="请选择节点"><span>删除</span></a></li>
+      <li><a class="edit" href="__URL__/edit/id/{sid_class}" target="navTab" mask="true" warn="请选择节点"><span>修改</span></a></li>
+<!--      <li><a class="icon" href="__URL__/download/map/{$map}" target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>-->
+      <li><a class="add" href="__URL__/datain/" target="navTab" mask="true"><span>导入黑名单</span></a></li>
+     
+      <li>
+                <a class="icon excelBtn"><span>导出EXCEL</span></a><a href="" target="dwzExport" targettype="navTab" title="确实要导出这些记录吗?"></a>
+      </li>
+      </if> 
+    </ul>
+  </div>
+
+  <table class="table" width="200%" layoutH="110">
+    <thead>
+      <tr>
+        <th width="4%">社区</th>
+        <th width="4%">快递公司</th>
+        <th width="4%">日期</th>
+        <th width="4%">到件</th>
+        <!-- <th width="4%">送件</th> -->
+        <th width="4%">当日妥投</th>
+        <th width="4%">问题件</th>
+        <th width="4%">派发应收</th>
+        <th width="4%">派发实收</th>
+        <th width="4%">散户揽收量</th>
+        <th width="4%">大客户揽收量</th>
+        <th width="4%">揽收金额</th>
+        <th width="4%">发货费用</th>
+        <th width="4%">所属集团</th>
+        <th width="4%">所属分公司</th>
+        <th width="4%">所属快递分公司</th>
+      </tr>
+    </thead>
+    <tbody class="excelContent">
+    <volist id="vo" name="list">
+      <tr target="sid_class" rel="{$vo['id']}">
+        <td>{$vo['Vid']|getFieldsById='Village','name'}</td>
+        <td>{$vo['ExpID']|getFieldById='Express','title'}</td>
+        <td>{$vo['pdate']}</td>
+        <td>{$vo['come']}</td>
+        <!-- <td>{$vo['send']}</td> -->
+        <td>{$vo['same_date']}</td>
+        <td>{$vo['problem']}</td>
+        <td>{$vo['shouldprice']|round=###,2}</td>
+        <td>{$vo['faceprice']|round=###,2}</td>
+        <td>{$vo['retail']}</td>
+        <td>{$vo['company']}</td>
+        <td>{$vo['money']|round=###,2}</td>
+        <td>{$vo['sendmoney']|round=###,2}</td>
+        <td>{$vo['Cid']|getFieldById='Company','title'}</td>
+        <td>{$vo['Cpid']|getFieldById='companypart','title'}</td>
+        <td>{$vo['Epid']|getFieldById='expresspart','partname'}</td>
+      </tr>
+    </volist>
+    </tbody>
+  </table>
+
+  <div class="panelBar">
+    <div class="pages">
+      <span>共{$totalCount}条</span>
+    </div>
+    <div class="pagination" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+  </div>
+</div>
+<script>
+    function getPosAndRec(m) {
+        var _Pos = new Array();
+        $("." + m + " input:checkbox").each(function() {
+            if ($(this).attr("checked")) {
+                _Pos.push($(this).val());
+            }
+        });
+        return _Pos;
+    }
+    var uids = new Array();
+    $(function() {
+        $(".excelBtn").click(function() {
+            uids = getPosAndRec("excelContent");
+            var m = $(this).next();
+            var n;
+            if (uids.length <= 0) {
+               // n = "__URL__/exportexcel/navTabId/__MODULE__?callbackType=closeCurrent";
+                alert("请选择要导出的数据！");
+                exit;
+            } else {
+                n = "__URL__/exportexcel/nkey/" + uids.join(",") + "/navTabId/__MODULE__?callbackType=closeCurrent";
+            }
+            m.attr("href", n);
+            m.click();
+            return false;
+        });
+        $("#select").click(function(){
+            if($("#companyid").val()==''){
+                alert("请输入检索条件！");
+            }
+            
+        });
+         });
+    
+</script>

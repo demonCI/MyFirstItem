@@ -1,0 +1,104 @@
+<form id="pagerForm" action="__URL__" method="post">
+    <input type="hidden" name="pageNum" value="1"/>
+</form>
+
+<div class="page">
+    <div class="pageHeader">
+        <form onsubmit="return navTabSearch(this);" action="__URL__" method="post">
+            <input type="hidden" name="pageNum" value="1"/>
+            <div class="searchBar">
+                <ul class="searchContent">
+                  <li>
+                        <label>店铺名称：</label>
+                        <SELECT name="shop_id">
+                            <option value="" selected="selected">--请选择--</option>
+                            <volist name="shopList" id="vop">
+                                <option <eq name="Think.request.companyid" value="$vop.id">selected</eq> value={$vop.id} >{$vop.name}</option>
+                            </volist>
+                        </SELECT>
+                    </li>
+                    <div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div>
+                </ul>
+            </div>
+        </form>
+    </div>
+
+    <div class="pageContent">
+        <div class="panelBar">
+            <ul class="toolBar">
+                <li><a class="add" href="__URL__/add" target="dialog" mask="true"><span>新增</span></a></li>
+                <li><a class="delete"><span>删除</span></a></li>
+            </ul>
+        </div>
+
+        <table class="table" width="100%" layoutH="114">
+            <thead>
+                <tr>
+                    <th width="30" class="hover"></th>
+                    <th width="60">编号</th>
+                    <th width="60">店铺名称</th>
+                    <th width="100">视频</th>
+                </tr>
+            </thead>
+            <tbody class="excelContent">
+            <volist id="vo" name="list">
+                <tr target="sid_group" rel="{$vo['id']}">
+                    <td><input name="id" value="{$vo.id}" type="checkbox"></td>
+                    <td>{$vo['id']}</td>
+                    <td>{$vo['shop_id']|getFieldById='shop','name'}</td>
+                    <td class="imgs"> <video width="220" height="100" controls>
+                            <source src="{$vo['video_url']}" type="video/mp4">
+                        </video></td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+
+        <div class="panelBar">
+            <div class="pages">
+                <span>共{$totalCount}条</span>
+            </div>
+            <div class="pagination" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+        </div>
+    </div>
+</div>
+
+<style type="text/css" media="screen">
+    .imgs{text-align:left;}
+    .imgs div{height:100px!important;}
+</style>
+<script>
+    function getPosAndRec(m) {
+        var _Pos = new Array();
+        $("." + m + " input:checkbox").each(function () {
+            if ($(this).attr("checked")) {
+                _Pos.push($(this).val());
+            }
+        });
+        return _Pos;
+    }
+    $(function () {
+        $(".delete").click(function () {
+            var myurl = "__URL__";
+            uids = getPosAndRec("excelContent");
+            if (uids.length == 0) {
+                alert("请选择要删除的数据");
+                return false;
+            }
+            $.ajax({
+                url: myurl + "/delete/",
+                data: {'uids': uids},
+                type: 'get',
+                datatype: 'json',
+                success: function (msg) {
+                    if (msg === '1') { //支付成功：关闭
+                        navTab.reloadFlag('Video');
+                    } else if (msg === '2') { //未支付：刷新结果
+                        alert("删除失败");
+                        navTab.reloadFlag('Video');
+                    }
+                }
+            });
+        });
+    });
+</script>
