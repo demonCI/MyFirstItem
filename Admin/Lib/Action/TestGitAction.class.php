@@ -15,9 +15,9 @@ class TestGitAction extends CommonAction {
      */
     public function index() {
         echo "this is my first checkout dev";
-        echo "123";
-        echo "456";
-        echo "789";
+    }
+    public function test(){
+        echo "hellow";
     }
 
 }
